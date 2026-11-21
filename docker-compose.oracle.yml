@@ -1,0 +1,40 @@
+name: lyftr-oracle
+
+services:
+  backend:
+    build:
+      context: ./backend
+    env_file: .env.oracle
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      LLM_CACHE_DIR: /data/llm-cache
+      PORT: "8000"
+    expose:
+      - "8000"
+    volumes:
+      - lyftr_data:/data
+    restart: unless-stopped
+
+  proxy:
+    image: caddy:2.10.2-alpine
+    environment:
+      BACKEND_HOSTNAME: ${BACKEND_HOSTNAME:?Set the public backend hostname in .env.oracle}
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.oracle:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  lyftr_data:
+    name: lyftr_oracle_data
+  caddy_data:
+    name: lyftr_oracle_tls
+  caddy_config:
+    name: lyftr_oracle_caddy_config

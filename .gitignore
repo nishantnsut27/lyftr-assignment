@@ -8,6 +8,7 @@
 
 # Local documentation and agent tooling; README will be published separately
 *.[mM][dD]
+/assesment.pdf
 .github/
 .codex/
 .agents/
