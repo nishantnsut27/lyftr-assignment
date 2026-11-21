@@ -1,5 +1,18 @@
+# Private environment files and credentials
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+
+# Local documentation and agent tooling; README will be published separately
 *.[mM][dD]
+.github/
+.codex/
+.agents/
+
+# Test publication: include the backend tests required by the assessment
 tests/
 test/
 __tests__/
@@ -7,19 +20,14 @@ __tests__/
 *.spec.*
 test_*.py
 *_test.py
-pytest.ini
-.github/
-.codex/
-.agents/
-.env.*
-!.env.example
-!.env.*.example
-*.pem
-*.key
-*credentials*.json
+!backend/tests/
+!backend/tests/*.py
+
+# Python dependencies, bytecode, and tool caches
 .venv/
 __pycache__/
 *.py[cod]
+*.egg-info/
 .pytest_cache/
 pytest-cache-files-*/
 .ruff_cache/
@@ -29,23 +37,28 @@ pytest-cache-files-*/
 .hypothesis/
 .coverage
 htmlcov/
-*.egg-info/
+
+# Frontend dependencies, builds, and test reports
 node_modules/
 dist/
 coverage/
 playwright-report/
 test-results/
 .vercel/
-.cache/
+
+# Local SQLite history, LiteLLM cache, and generated artifacts
 data/
 *.db
 *.db-shm
 *.db-wal
 *.sqlite*
+.cache/
 tmp/
 output/
 *.log
-.DS_Store
-Thumbs.db
+
+# Editor and operating-system files
 .idea/
 .vscode/
+.DS_Store
+Thumbs.db

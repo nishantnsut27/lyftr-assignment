@@ -1,0 +1,44 @@
+name: lyftr
+
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      LLM_API_KEYS: ${LLM_API_KEYS:?Set LLM_API_KEYS in the ignored root .env}
+      LLM_MODEL: ${LLM_MODEL:-groq/openai/gpt-oss-20b}
+      DATABASE_URL: sqlite:////data/app.db
+      LLM_CACHE_DIR: /data/llm-cache
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
+      ENABLE_FAILURE_SIMULATION: ${ENABLE_FAILURE_SIMULATION:-false}
+      DEFAULT_SYSTEM_PROMPT: ${DEFAULT_SYSTEM_PROMPT:-You are a helpful assistant. Answer clearly and concisely.}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-1024}
+      PORT: "8000"
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - lyftr_data:/data
+    networks:
+      - lyftr
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - lyftr
+
+volumes:
+  lyftr_data:
+    name: lyftr_data
+
+networks:
+  lyftr:
+    driver: bridge

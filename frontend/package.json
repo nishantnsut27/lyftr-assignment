@@ -16,6 +16,7 @@
     "format:check": "prettier --check src tests *.json *.ts *.js index.html",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run build",
     "test": "vitest run",
+    "test:e2e": "node tests/e2e/acceptance.mjs",
     "test:evidence": "vitest run --reporter=default --reporter=json --outputFile=../.cache/phase2/component-results.json"
   },
   "dependencies": {
