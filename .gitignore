@@ -6,8 +6,9 @@
 *.key
 *credentials*.json
 
-# Local documentation and agent tooling; README will be published separately
+# Local planning documents and agent tooling
 *.[mM][dD]
+!/README.md
 /assesment.pdf
 .github/
 .codex/
